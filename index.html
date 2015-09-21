@@ -15,8 +15,8 @@
     -->
     <script>
         (function(){
+
             var onLoadCallback = function(containerSize, childSize, numberOfChildren) {
-                var containerSize = 600, childSize = 100, numberOfChildren = 14;
                 var container;
                 function generateRandomColor() {
                     var letters = '0123456789ABCDEF'.split('');
@@ -62,8 +62,10 @@
                 createChildren(container, childSize, numberOfChildren);
                 document.body.appendChild(container);
             };
-
-            document.addEventListener("DOMContentLoaded", onLoadCallback);
+          var containerSize = 600, childSize = 100, numberOfChildren = 14;
+            window.onload = function () {
+                onLoadCallback(containerSize, childSize, numberOfChildren)
+            }
         })();
     </script>
 </head>
