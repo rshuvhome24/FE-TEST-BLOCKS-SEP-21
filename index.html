@@ -14,9 +14,77 @@
         - when you hover it longer than 3 seconds it disappears
     -->
     <script>
-        var onLoadCallback = function(containerSize, childSize, numberOfChildren) {
-            
-        }
+        (function(){
+
+            var onLoadCallback = function(containerSize, childSize, numberOfChildren) {
+                var container;
+                function generateRandomColor() {
+                    var letters = '0123456789ABCDEF'.split('');
+                    var color = '#';
+                    for (var i = 0; i < 6; i++ ) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+                function createContainer(size){
+                    var container = document.createElement('div');
+                    container.setAttribute('id', 'container');
+                    container.style.height = size+'px';
+                    container.style.width = size+'px';
+                    container.style.border = '1px solid grey';
+                    container.style.overflow = 'scroll';
+                    container.style.margin = '10px auto';
+                    return container;
+                }
+                function createChildren(parentContainer, size, number){
+                    for(var i =0; i<number; i++){
+                        var child = document.createElement('div');
+                        child.setAttribute('id', 'child-'+i);
+                        child.setAttribute('class', 'child');
+                        child.style.height = size+'px';
+                        child.style.width = size+'px';
+                        child.style.float = 'left';
+                        child.style.backgroundColor = generateRandomColor();
+                        child.style.border = '1px solid black';
+                        child.addEventListener('mouseover', function(){
+                            var elem = document.getElementById(this.id);
+                            var deleteTimeOut = setTimeout(function () {
+                                parentContainer.removeChild(elem);
+                            }, 3000);
+                            this.addEventListener('mouseleave', function () {
+                                clearTimeout(deleteTimeOut);
+                            });
+                        });
+                        parentContainer.appendChild(child);
+                    }
+                }
+                container = createContainer(containerSize);
+                createChildren(container, childSize, numberOfChildren);
+                document.body.appendChild(container);
+            };
+          var containerSize = 714, childSize = 95, numberOfChildren = 37;
+            function childFitCheck(containerSize, childSize, numberOfChildren ){
+                var itemsPerLine = Math.floor(((containerSize-(childSize/7.5))/childSize));
+                if(itemsPerLine < 0){
+                    return false;
+                }
+                var rowCount = Math.ceil(numberOfChildren/itemsPerLine);
+                var totalChildHeight = childSize*rowCount;
+                if(totalChildHeight > containerSize){
+                    return false;
+                }
+                return true;
+            }
+
+            window.onload = function () {
+                if(childFitCheck(containerSize, childSize, numberOfChildren)){
+                    onLoadCallback(containerSize, childSize, numberOfChildren);
+                }else{
+                    alert("Child elements don't fit into the parent container");
+                }
+
+            }
+        })();
     </script>
 </head>
 <body>
