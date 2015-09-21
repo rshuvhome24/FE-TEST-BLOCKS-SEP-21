@@ -62,9 +62,27 @@
                 createChildren(container, childSize, numberOfChildren);
                 document.body.appendChild(container);
             };
-          var containerSize = 600, childSize = 100, numberOfChildren = 14;
+          var containerSize = 714, childSize = 95, numberOfChildren = 37;
+            function childFitCheck(containerSize, childSize, numberOfChildren ){
+                var itemsPerLine = Math.floor(((containerSize-(childSize/7.5))/childSize));
+                if(itemsPerLine < 0){
+                    return false;
+                }
+                var rowCount = Math.ceil(numberOfChildren/itemsPerLine);
+                var totalChildHeight = childSize*rowCount;
+                if(totalChildHeight > containerSize){
+                    return false;
+                }
+                return true;
+            }
+
             window.onload = function () {
-                onLoadCallback(containerSize, childSize, numberOfChildren)
+                if(childFitCheck(containerSize, childSize, numberOfChildren)){
+                    onLoadCallback(containerSize, childSize, numberOfChildren);
+                }else{
+                    alert("Child elements don't fit into the parent container");
+                }
+
             }
         })();
     </script>
